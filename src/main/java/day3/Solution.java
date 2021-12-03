@@ -39,50 +39,43 @@ public class Solution {
     public static int secondPart() {
         List<String> inputForOxygenCalculation = new InputReader().readInput("input_day3");
         List<String> inputForCO2Calculation = new InputReader().readInput("input_day3");
-        String oxygen = null;
-        String co2 = null;
+        String oxygen = "";
+        String co2 = "";
 
         // Calculate oxygen
         for (int i = 0; i < 12; i++) {
             int countBit0 = 0;
-            int countBit1 = 0;
-            for (int j = 0; j < inputForOxygenCalculation.size(); j++) {
-                int bitValue = Integer.parseInt(inputForOxygenCalculation.get(j).substring(i, i + 1));
-                if (bitValue == 0) {
+            for (String s : inputForOxygenCalculation) {
+                if (s.charAt(i) == '0') {
                     countBit0++;
-                } else {
-                    countBit1++;
                 }
             }
-            int finalIndex = i;
-            if (countBit0 > countBit1) {
+            int position = i;
+            if (countBit0 > (inputForOxygenCalculation.size() - countBit0)) {
                 inputForOxygenCalculation = inputForOxygenCalculation.stream()
-                        .filter(x -> x.charAt(finalIndex) == '0')
+                        .filter(x -> x.charAt(position) == '0')
                         .toList();
             } else {
                 inputForOxygenCalculation = inputForOxygenCalculation.stream()
-                        .filter(x -> x.charAt(finalIndex) == '1')
+                        .filter(x -> x.charAt(position) == '1')
                         .toList();
             }
             if (inputForOxygenCalculation.size() == 1) {
                oxygen = inputForOxygenCalculation.get(0);
+               break;
             }
         }
 
         // Calculate CO2
         for (int i = 0; i < 12; i++) {
             int countBit0 = 0;
-            int countBit1 = 0;
-            for (int j = 0; j < inputForCO2Calculation.size(); j++) {
-                int bitValue = Integer.parseInt(inputForCO2Calculation.get(j).substring(i, i + 1));
-                if (bitValue == 0) {
+            for (String s : inputForCO2Calculation) {
+                if (s.charAt(i) == '0') {
                     countBit0++;
-                } else {
-                    countBit1++;
                 }
             }
             int finalIndex = i;
-            if (countBit0 <= countBit1) {
+            if (countBit0 <= (inputForCO2Calculation.size() - countBit0)) {
                 inputForCO2Calculation = inputForCO2Calculation.stream()
                         .filter(x -> x.charAt(finalIndex) == '0')
                         .toList();
@@ -93,6 +86,7 @@ public class Solution {
             }
             if (inputForCO2Calculation.size() == 1) {
                 co2 = inputForCO2Calculation.get(0);
+                break;
             }
         }
         return Integer.parseInt(oxygen,2) * Integer.parseInt(co2, 2);
