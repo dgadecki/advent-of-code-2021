@@ -16,31 +16,24 @@ public class Solution {
 
     public static int firstPart() {
         List<String> inputAsString = new InputReader().readInput("input_day3");
-        String gammaValues = "";
-        String epsilonValues = "";
+        StringBuilder gammaValues = new StringBuilder();
+        StringBuilder epsilonValues = new StringBuilder();
         for (int i = 0; i < 12; i++) {
             int countBit0 = 0;
-            int countBit1 = 0;
-            for (int j = 0; j < inputAsString.size(); j++) {
-                int bitValue = Integer.valueOf(inputAsString.get(j).substring(i, i + 1));
-                if (bitValue == 0) {
+            for (String s : inputAsString) {
+                if (s.charAt(i) == '0') {
                     countBit0++;
-                } else {
-                    countBit1++;
                 }
             }
-            if (countBit0 > countBit1) {
-                gammaValues += "0";
-                epsilonValues += "1";
+            if (countBit0 > (inputAsString.size() - countBit0)) {
+                gammaValues.append("0");
+                epsilonValues.append("1");
             } else {
-                gammaValues += "1";
-                epsilonValues += "0";
+                gammaValues.append("1");
+                epsilonValues.append("0");
             }
         }
-        int gamma = Integer.parseInt(gammaValues,2);
-        int epsilon = Integer.parseInt(epsilonValues,2);
-
-        return gamma * epsilon;
+        return Integer.parseInt(gammaValues.toString(),2) * Integer.parseInt(epsilonValues.toString(),2);
     }
 
     public static int secondPart() {
