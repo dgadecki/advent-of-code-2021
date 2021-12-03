@@ -5,7 +5,7 @@ import common.InputReader;
 import java.util.List;
 
 /**
- * Advent of code - day 2
+ * Advent of code - day 3
  */
 public class Solution {
 
@@ -74,14 +74,14 @@ public class Solution {
                     countBit0++;
                 }
             }
-            int finalIndex = i;
+            int position = i;
             if (countBit0 <= (inputForCO2Calculation.size() - countBit0)) {
                 inputForCO2Calculation = inputForCO2Calculation.stream()
-                        .filter(x -> x.charAt(finalIndex) == '0')
+                        .filter(x -> x.charAt(position) == '0')
                         .toList();
             } else {
                 inputForCO2Calculation = inputForCO2Calculation.stream()
-                        .filter(x -> x.charAt(finalIndex) == '1')
+                        .filter(x -> x.charAt(position) == '1')
                         .toList();
             }
             if (inputForCO2Calculation.size() == 1) {
