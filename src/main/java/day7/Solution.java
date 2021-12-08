@@ -44,7 +44,7 @@ public class Solution {
             int fuel = 0;
             for(Integer position : positions) {
                 int abs = Math.abs(position - i);
-                // Suma ciągu arytmetycznego: 1, 2, 3, ..., abs = ((1 + a_n) * n) / 2)
+                // Suma ciągu arytmetycznego: 1, 2, 3, ..., n = ((1 + a_n) * n) / 2)
                 fuel += ((1 + abs) * abs) / 2;
             }
             if (best > fuel) {
