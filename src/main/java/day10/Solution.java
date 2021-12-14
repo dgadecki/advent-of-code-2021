@@ -6,7 +6,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -15,6 +18,19 @@ import java.util.stream.Stream;
  * Advent of code - day 10
  */
 public class Solution {
+
+    private static final Map<Character, Character> openAndCloseCharacters = Map.of(
+            '(', ')',
+            '[', ']',
+            '{', '}',
+            '<', '>'
+    );
+    private static final Map<Character, Long> endingCharactersAndValues = Map.of(
+            ')', 3L,
+            ']', 57L,
+            '}', 1197L,
+            '>', 25137L
+    );
 
     public static void main(String[] args) {
         System.out.println("First result: " + firstPart());
@@ -38,16 +54,13 @@ public class Solution {
             char[] singleLine = input[i];
             Deque<Character> stack = new ArrayDeque<>();
             for (char c : singleLine) {
-                if (c == '(' || c == '{' || c == '[' || c == '<') {
+                if (openAndCloseCharacters.containsKey(c)) {
                     stack.push(c);
                 } else {
                     if ((c == ')' && stack.peek() == '(') || (c == '}' && stack.peek() == '{') || (c == ']' && stack.peek() == '[') || (c == '>' && stack.peek() == '<')) {
                         stack.pop();
                     } else {
-                        if (c == ')') result += 3;
-                        if (c == ']') result += 57;
-                        if (c == '}') result += 1197;
-                        if (c == '>') result += 25137;
+                        result += endingCharactersAndValues.get(c);
                         break;
                     }
                 }
@@ -73,7 +86,7 @@ public class Solution {
             char[] singleLine = input[i];
             Deque<Character> stack = new ArrayDeque<>();
             for (char c : singleLine) {
-                if (c == '(' || c == '{' || c == '[' || c == '<') {
+                if (openAndCloseCharacters.containsKey(c)) {
                     stack.push(c);
                 } else {
                     if ((c == ')' && stack.peek() == '(') || (c == '}' && stack.peek() == '{') || (c == ']' && stack.peek() == '[') || (c == '>' && stack.peek() == '<')) {
@@ -95,9 +108,8 @@ public class Solution {
         List<List<Character>> charsToComplete = new ArrayList<>();
         for (char[] line : legalLines) {
             Deque<Character> stack = new ArrayDeque<>();
-            for (int i = 0; i < line.length; i++) {
-                char c = line[i];
-                if (c == '(' || c == '{' || c == '[' || c == '<') {
+            for (char c : line) {
+                if (openAndCloseCharacters.containsKey(c)) {
                     stack.push(c);
                 } else {
                     if ((c == ')' && stack.peek() == '(') || (c == '}' && stack.peek() == '{') || (c == ']' && stack.peek() == '[') || (c == '>' && stack.peek() == '<')) {
@@ -105,13 +117,10 @@ public class Solution {
                     }
                 }
             }
-            List<Character> toComplete = new ArrayList<>();
-            for (Character c : stack) {
-                if (c == '(') toComplete.add(')');
-                if (c == '[') toComplete.add(']');
-                if (c == '{') toComplete.add('}');
-                if (c == '<') toComplete.add('>');
-            }
+            List<Character> toComplete = stack.stream()
+                    .map(openAndCloseCharacters::get)
+                    .toList();
+
             charsToComplete.add(toComplete);
         }
         List<Long> results = new ArrayList<>();
